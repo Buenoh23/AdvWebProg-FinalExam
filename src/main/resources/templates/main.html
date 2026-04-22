@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Advising Portal</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .header-flex { display: flex; justify-content: space-between; align-items: center; }
+        .nav-links a { margin-left: 15px; text-decoration: none; color: #0056b3; font-weight: bold; }
+        .card { background-color: #b0d87c; padding: 20px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; }
+        .form-inline { display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; }
+        .form-group { display: flex; flex-direction: column; }
+        input, select { padding: 8px; margin-top: 5px; }
+        .btn-primary { background-color: #0056b3; color: white; border: none; padding: 9px 15px; cursor: pointer; border-radius: 3px; }
+        .btn-secondary { background-color: #6c757d; color: white; border: none; padding: 9px 15px; cursor: pointer; border-radius: 3px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        th { background-color: #006338; color: white}
+        .error-msg { color: #dc3545; font-weight: bold; padding: 10px; background-color: #f8d7da; border: 1px solid #f5c6cb; margin-bottom: 15px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="header-flex">
+        <h1>International Student Advising</h1>
+        <div class="nav-links">
+            <a th:href="@{/main}">Requests</a>
+            <a th:href="@{/dashboard}">Dashboard</a>
+        </div>
+    </div>
+    <hr>
+
+    <div class="card">
+        <h3>Create New Request</h3>
+        <form hx-post="/main" hx-target="#request-list" hx-swap="outerHTML" class="form-inline">
+            <div class="form-group">
+                <label>Title:</label>
+                <input type="text" name="title" required style="width: 250px;" />
+            </div>
+            <div class="form-group">
+                <label>Urgency (1-3):</label>
+                <input type="number" name="urgencyScore" required style="width: 80px;" />
+            </div>
+            <div class="form-group">
+                <label>Category:</label>
+                <select name="category" required>
+                    <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn-primary">Submit Request</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>Filter Requests</h3>
+        <form hx-get="/main/fragment/list" hx-target="#request-list" hx-swap="outerHTML" class="form-inline">
+            <div class="form-group">
+                <label>View By Category:</label>
+                <select name="categoryId">
+                    <option value="">-- All Categories --</option>
+                    <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn-secondary">Filter</button>
+        </form>
+    </div>
+
+    <div id="request-list">
+        <div th:replace="~{fragments/list :: requestList}"></div>
+    </div>
+
+</body>
+</html>

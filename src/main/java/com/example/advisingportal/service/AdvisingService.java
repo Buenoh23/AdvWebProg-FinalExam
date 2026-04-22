@@ -66,4 +66,17 @@ public class AdvisingService {
     public void deleteRequest(Long id) {
         requestRepo.deleteById(id);
     }
+
+    // --- DASHBOARD METHODS ---
+    public long getTotalRequests() {
+        return requestRepo.count(); // Built-in JPA method for KPI 1
+    }
+
+    public long getSubmittedRequestsCount() {
+        return requestRepo.countByStatus("SUBMITTED"); // KPI 2
+    }
+
+    public List<Object[]> getCategorySummary() {
+        return requestRepo.countRequestsByCategory(); // Group-by Table
+    }
 }

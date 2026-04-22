@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Advising Portal - Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        .header-flex { display: flex; justify-content: space-between; align-items: center; }
+        .nav-links a { margin-left: 15px; text-decoration: none; color: #0056b3; font-weight: bold; }
+        
+        /* KPI Cards Layout */
+        .kpi-container { display: flex; gap: 20px; margin-bottom: 30px; }
+        .kpi-card { flex: 1; background-color: #b0d87c; border: 1px solid #dee2e6; border-radius: 5px; padding: 20px; text-align: center; }
+        .kpi-number { font-size: 48px; font-weight: bold; color: #ba4700; margin: 10px 0; }
+        .kpi-title { color: #ba4700; text-transform: uppercase; letter-spacing: 1px; font-size: 14px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ccc; padding: 12px; text-align: left; }
+        th { background-color: #006338; color: white}
+    </style>
+</head>
+<body>
+    <div class="header-flex">
+        <h1>System Dashboard</h1>
+        <div class="nav-links">
+            <a th:href="@{/main}">← Back to Requests</a>
+        </div>
+    </div>
+    <hr>
+
+    <h2>Key Performance Indicators</h2>
+    <div class="kpi-container">
+        <div class="kpi-card">
+            <div class="kpi-title">Total Requests</div>
+            <div class="kpi-number" th:text="${totalRequests}">0</div>
+        </div>
+        
+        <div class="kpi-card">
+            <div class="kpi-title">Awaiting Review (Submitted)</div>
+            <div class="kpi-number" th:text="${submittedRequests}">0</div>
+        </div>
+    </div>
+
+    <h2>Requests by Category Summary</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Support Category</th>
+                <th>Total Tickets</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="row : ${categorySummary}">
+                <td th:text="${row[0]}">Category Name</td>
+                <td th:text="${row[1]}" style="font-weight: bold;">0</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

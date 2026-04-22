@@ -15,6 +15,11 @@ public class MainController {
         this.advisingService = advisingService;
     }
 
+    @GetMapping("/")
+    public String redirectToMain() {
+        return "redirect:/main";
+    }
+
     // 1. GET /main - Main page with full layout
     @GetMapping("/main")
     public String getMainPage(Model model) {
@@ -67,5 +72,14 @@ public class MainController {
         advisingService.deleteRequest(id);
         model.addAttribute("requests", advisingService.getAllRequests());
         return "fragments/list :: requestList"; // Returns ONLY the fragment
+    }
+
+    // 6. GET /dashboard - Dashboard summary page
+    @GetMapping("/dashboard")
+    public String getDashboard(Model model) {
+        model.addAttribute("totalRequests", advisingService.getTotalRequests());
+        model.addAttribute("submittedRequests", advisingService.getSubmittedRequestsCount());
+        model.addAttribute("categorySummary", advisingService.getCategorySummary());
+        return "dashboard"; // Returns the full HTML dashboard page
     }
 }
